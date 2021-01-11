@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 
 @RestController
@@ -40,7 +41,13 @@ public class UserController {
   }
 
   @PostMapping("/register")
-  public void registerUser(@RequestBody User user) {
-    userService.addNewUser(user);
+  public void registerUser(@RequestBody User user, HttpServletRequest request) {
+    userService.addNewUser(user, request);
+  }
+  @RequestMapping("/verify-token")
+  public String confirmationByEmail(@RequestParam String token) {
+    userService.verifyToken(token);
+    return "Gratulacje.Twój adres mailowy został potwierdzony";
   }
 }
+

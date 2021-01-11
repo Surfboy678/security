@@ -22,6 +22,8 @@ public class User implements UserDetails {
 
   private String role;
 
+  private boolean isEnabled;
+
   public Integer getId() {
     return id;
   }
@@ -59,7 +61,7 @@ public class User implements UserDetails {
 
   @Override
   public boolean isEnabled() {
-    return true;
+    return isEnabled;
   }
 
   public void setUsername(String username) {
@@ -77,5 +79,9 @@ public class User implements UserDetails {
 
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  public void setEnabled(boolean enabled) {
+    isEnabled = enabled;
   }
 }
