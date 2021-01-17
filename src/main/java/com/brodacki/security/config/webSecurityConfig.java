@@ -13,7 +13,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.Collections;
 
 @Configuration
 public class webSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -32,20 +31,6 @@ public class webSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//    User userAdmin =
-//        new User(
-//            "Jan",
-//            getPasswordEncoder().encode("Jan123"),
-//            Collections.singleton(new SimpleGrantedAuthority("ROLE_ADMIN")));
-//
-//        User userUser =
-//                new User(
-//                        "Karol",
-//                        getPasswordEncoder().encode("Karol123"),
-//                        Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")));
-//
-//        auth.inMemoryAuthentication().withUser(userUser);
-//        auth.inMemoryAuthentication().withUser(userAdmin);
 
         auth.userDetailsService(userDetailsService);
 
