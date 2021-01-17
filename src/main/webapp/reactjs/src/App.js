@@ -5,7 +5,7 @@ import Welcome from './components/Welcome';
 import Footer from './components/Footer';
 import {Container, Row,  Col } from 'react-bootstrap';
 import { Route, Switch, BrowserRouter as Router } from 'react-router-dom';
-import Login from './components/Login';
+import Login from './components/Register';
 
 function App() {
   const marginTop = {
