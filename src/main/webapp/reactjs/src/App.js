@@ -5,7 +5,8 @@ import Welcome from './components/Welcome';
 import Footer from './components/Footer';
 import {Container, Row,  Col } from 'react-bootstrap';
 import { Route, Switch, BrowserRouter as Router } from 'react-router-dom';
-import Login from './components/Register';
+import Login from './components/Login';
+import Register from './components/Register';
 
 function App() {
   const marginTop = {
@@ -19,6 +20,7 @@ function App() {
             <Col lg = {12} style = {marginTop}>
               <Switch>
                   <Route path="/" exact component ={Welcome}/>
+                  <Route path="/register" exact component ={Register}/> 
                   <Route path="/login" exact component ={Login}/>               
               </Switch>            
             </Col>

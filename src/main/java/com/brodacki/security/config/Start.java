@@ -24,6 +24,7 @@ public class Start {
     user.setUsername("Janusz");
     user.setPassword(passwordEncoder.encode("Janusz123"));
     user.setRole(ROLE_USER);
+    user.setEnabled(true);
     userRepository.save(user);
   }
 }

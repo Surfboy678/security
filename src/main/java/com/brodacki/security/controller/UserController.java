@@ -44,10 +44,10 @@ public class UserController {
   public void registerUser(@RequestBody User user, HttpServletRequest request) {
     userService.addNewUser(user, request);
   }
+
   @RequestMapping("/verify-token")
   public String confirmationByEmail(@RequestParam String token) {
     userService.verifyToken(token);
     return "Gratulacje.Twój adres mailowy został potwierdzony";
   }
 }
-

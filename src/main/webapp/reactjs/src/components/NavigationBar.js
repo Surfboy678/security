@@ -11,7 +11,8 @@ class NavigationBar extends React.Component {
                     <Navbar.Brand href="/">Security</Navbar.Brand>
                 </Link>
                 <Nav className="mr-auto">
-                    <Link to={"/login"} className="nav-link">Register</Link>                   
+                    <Link to={"/register"} className="nav-link">Register</Link>
+                    <Link to={"/login"} className="nav-link">Login</Link>                   
                 </Nav>
             </Navbar>
         );

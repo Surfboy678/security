@@ -1,10 +1,10 @@
 import React from 'react';
-import{Form, Button, Col} from 'react-bootstrap';
+import{Form, Button} from 'react-bootstrap';
 
 import axios from 'axios';
 
 
-class Register extends React.Component{
+class Login extends React.Component{
 
   constructor(props){
     super(props);
@@ -14,7 +14,7 @@ class Register extends React.Component{
   }
 
   initialState = {
-    username: '', password: '', role: ''
+    username: '', password: ''
   }
 
   submitUser = event => {
@@ -23,15 +23,15 @@ class Register extends React.Component{
     const user = {
       username: this.state.username,   
       password: this.state.password,
-      role: this.state.role
+        
 
     };
 
-    axios.post("http://localhost:8080/register", user)
+    axios.post("http://localhost:8080/login", user)
     .then(response => {
       if(response.data != null){
           this.setState(this.initialState);
-          alert("user register succes")
+          alert("login succes")
       }
 
     });
@@ -64,27 +64,7 @@ class Register extends React.Component{
     type="text" name="password"
     value={this.state.password} onChange={this.userChange}
      placeholder="Password" />
-  </Form.Group>
-  <Form.Group controlId="formBasicChooseRole">
-  <Col xs="auto" className="my-1">
-      <Form.Label className="mr-sm-2" htmlFor="inlineFormCustomSelect" srOnly>
-        Preference
-      </Form.Label>
-      <Form.Control
-      type= "text" name ="role"
-       value={this.state.role} onChange={this.userChange}
-        as="select"
-        className="mr-sm-2"
-        id="inlineFormCustomSelect"
-        custom
-      >
-        <option value="0">Choose Role...</option>
-        <option value="ROLE_USER" >USER</option>
-        <option value="ROLE_ADMIN">ADMIN</option>
-      </Form.Control>
-    </Col>
-    </Form.Group>
-    
+  </Form.Group>    
   <Button variant="primary" type="submit">
     Submit
   </Button>
@@ -94,4 +74,4 @@ class Register extends React.Component{
         );
     }
 }
-export default Register;
+export default Login;
