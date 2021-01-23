@@ -3,26 +3,38 @@ package com.brodacki.security.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 public class webSecurityConfig extends WebSecurityConfigurerAdapter {
+
+  private RestAuthenticationFailureHandler authenticationFailureHandler;
+
+  private RestAuthenticationSuccessHandler authenticationSuccessHandler;
+
+  private UserDetailsService userDetailsService;
 
   @Bean
   public PasswordEncoder getPasswordEncoder() {
     return new BCryptPasswordEncoder();
   }
 
-  private UserDetailsService userDetailsService;
-
   @Autowired
-  public webSecurityConfig(UserDetailsService userDetailsService) {
+  public webSecurityConfig(
+      UserDetailsService userDetailsService,
+      RestAuthenticationFailureHandler authenticationFailureHandler,
+      RestAuthenticationSuccessHandler authenticationSuccessHandler) {
     this.userDetailsService = userDetailsService;
+    this.authenticationSuccessHandler = authenticationSuccessHandler;
+    this.authenticationFailureHandler = authenticationFailureHandler;
   }
 
   @Override
@@ -38,17 +50,28 @@ public class webSecurityConfig extends WebSecurityConfigurerAdapter {
         .csrf()
         .disable()
         .authorizeRequests()
-        .antMatchers("/forAdmin")
-        .hasRole("ADMIN")
+        // .antMatchers("/forAdmin")
+        // .hasRole("ADMIN")
         .antMatchers("/forUser")
-        .hasRole("USER")
-        .antMatchers("/forAll")
+        .hasRole("ADMIN")
+        .antMatchers("/register")
         .permitAll()
-        .and()
-        .formLogin().loginPage("/login").defaultSuccessUrl("/forUser")
+        .antMatchers("/verify-token")
         .permitAll()
+        .anyRequest()
+        .authenticated()
         .and()
-        .logout()
-        .logoutSuccessUrl("/forAll");
+        .addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+        .exceptionHandling()
+        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
+  }
+
+  @Bean
+  public JsonObjectAuthenticationFilter authenticationFilter() throws Exception {
+    JsonObjectAuthenticationFilter filter = new JsonObjectAuthenticationFilter();
+    filter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
+    filter.setAuthenticationFailureHandler(authenticationFailureHandler);
+    filter.setAuthenticationManager(super.authenticationManager());
+    return filter;
   }
 }
